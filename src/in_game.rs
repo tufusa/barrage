@@ -2,6 +2,9 @@ use bevy::prelude::*;
 
 mod delta;
 
+#[derive(Component)]
+pub(crate) struct InGame;
+
 pub(crate) fn setup(mut commands: Commands) {
-    delta::setup(&mut commands);
+    delta::spawn(&mut commands, InGame);
 }

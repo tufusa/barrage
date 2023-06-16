@@ -1,5 +1,5 @@
 use bevy::prelude::*;
 
-pub(crate) fn setup(commands: &mut Commands) {
+pub(crate) fn spawn(commands: &mut Commands, bundle: impl Bundle) {
 
 }
