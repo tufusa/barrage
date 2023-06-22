@@ -1,5 +1,5 @@
-pub(crate) struct Title;
+mod delta;
+mod title;
 
-impl Title {
-    pub(crate) const TITLE: &str = "Barrage";
-}
+pub(crate) struct Delta;
+pub(crate) struct Title;

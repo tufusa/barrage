@@ -1,5 +1,7 @@
-use crate::config;
 use bevy::{app::PluginGroupBuilder, prelude::*, window::*};
+use bevy_prototype_lyon::prelude::*;
+
+use crate::config;
 
 #[cfg(not(target_family = "wasm"))]
 pub(crate) fn plugins() -> PluginGroupBuilder {
@@ -17,16 +19,19 @@ pub(crate) fn plugins() -> PluginGroupBuilder {
             ..Default::default()
         })
         .add_before::<bevy::asset::AssetPlugin, _>(EmbeddedAssetPlugin)
+        .add(ShapePlugin)
 }
 
 #[cfg(target_family = "wasm")]
 pub(crate) fn plugins() -> PluginGroupBuilder {
-    DefaultPlugins.set(WindowPlugin {
-        primary_window: Some(Window {
-            title: config::Title::TITLE.into(),
-            resolution: (1536., 864.).into(),
+    DefaultPlugins
+        .set(WindowPlugin {
+            primary_window: Some(Window {
+                title: config::Title::TITLE.into(),
+                resolution: (1536., 864.).into(),
+                ..Default::default()
+            }),
             ..Default::default()
-        }),
-        ..Default::default()
-    })
+        })
+        .add(ShapePlugin)
 }

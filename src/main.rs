@@ -5,9 +5,9 @@ use bevy::prelude::*;
 mod app_state;
 mod config;
 mod font;
+mod in_game;
 mod plugins;
 mod title;
-mod in_game;
 
 fn main() {
     App::new()
@@ -17,6 +17,11 @@ fn main() {
         .add_system(title::setup.in_schedule(OnEnter(app_state::AppState::Title)))
         .add_system(title::cleanup.in_schedule(OnExit(app_state::AppState::Title)))
         .add_system(in_game::setup.in_schedule(OnEnter(app_state::AppState::InGame)))
+        .add_systems(
+            (in_game::delta::run, in_game::tracer::trace)
+                .in_set(OnUpdate(app_state::AppState::InGame)),
+        )
+        .add_system(in_game::cleanup.in_schedule(OnExit(app_state::AppState::InGame)))
         .run();
 }
 

@@ -6,7 +6,6 @@ use crate::app_state;
 pub struct Title;
 
 pub(crate) fn setup(
-    mut commands: Commands,
     mut next_state: ResMut<NextState<app_state::AppState>>,
 ) {
     next_state.set(app_state::AppState::InGame);
