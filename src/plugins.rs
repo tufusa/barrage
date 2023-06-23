@@ -11,7 +11,7 @@ pub(crate) fn plugins() -> PluginGroupBuilder {
         .set(WindowPlugin {
             primary_window: Some(Window {
                 present_mode: PresentMode::AutoVsync,
-                mode: WindowMode::Fullscreen,
+                mode: WindowMode::Windowed,
                 title: config::Title::TITLE.into(),
                 resizable: false,
                 ..Default::default()

@@ -1,5 +1,7 @@
 use bevy::prelude::*;
 
+pub(crate) mod bullet;
+pub(crate) mod bullets;
 pub(crate) mod delta;
 mod gumowski_mira;
 pub(crate) mod tracer;

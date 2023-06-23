@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // releaseではコンソールを非表示
 
 use bevy::prelude::*;
+use in_game::{bullet, bullets};
 
 mod app_state;
 mod config;
@@ -23,6 +24,10 @@ fn main() {
                 in_game::delta::run_timer,
                 in_game::tracer::trace,
             )
+                .in_set(OnUpdate(app_state::AppState::InGame)),
+        )
+        .add_systems(
+            (in_game::bullet::run::<bullets::StraightBullet>,)
                 .in_set(OnUpdate(app_state::AppState::InGame)),
         )
         .add_system(in_game::cleanup.in_schedule(OnExit(app_state::AppState::InGame)))
