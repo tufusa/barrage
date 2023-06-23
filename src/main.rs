@@ -18,7 +18,11 @@ fn main() {
         .add_system(title::cleanup.in_schedule(OnExit(app_state::AppState::Title)))
         .add_system(in_game::setup.in_schedule(OnEnter(app_state::AppState::InGame)))
         .add_systems(
-            (in_game::delta::run, in_game::tracer::trace)
+            (
+                in_game::delta::run,
+                in_game::delta::run_timer,
+                in_game::tracer::trace,
+            )
                 .in_set(OnUpdate(app_state::AppState::InGame)),
         )
         .add_system(in_game::cleanup.in_schedule(OnExit(app_state::AppState::InGame)))
@@ -26,6 +30,10 @@ fn main() {
 }
 
 fn setup(mut commands: Commands, server: Res<AssetServer>) {
-    commands.spawn(Camera2dBundle::default());
+    let camera = Camera2dBundle {
+        transform: Transform::from_translation((1., 1., 1.).into()),
+        ..Default::default()
+    };
+    commands.spawn(camera);
     commands.insert_resource(font::UI(server.load("fonts/Roboto-Thin.ttf")));
 }

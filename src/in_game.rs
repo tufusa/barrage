@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 
 pub(crate) mod delta;
+mod gumowski_mira;
 pub(crate) mod tracer;
 
 #[derive(Component)]
@@ -11,7 +12,7 @@ pub(crate) fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
-    delta::spawn(&mut commands, &mut meshes, &mut materials, (InGame, tracer::Tracer{last_point: Vec2::ZERO}));
+    delta::spawn(&mut commands, &mut meshes, &mut materials, InGame);
 }
 
 pub(crate) fn cleanup(mut commands: Commands, in_game_query: Query<Entity, With<InGame>>) {

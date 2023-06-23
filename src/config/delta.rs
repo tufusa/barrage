@@ -12,5 +12,5 @@ impl Delta {
         y: 3. * 10.,
         z: 0.,
     };
-    pub(crate) const COLOR: Color = Color::rgb(1., 1., 1.);
+    pub(crate) const COLOR: Color = Color::NONE;
 }

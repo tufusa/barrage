@@ -5,9 +5,7 @@ use crate::app_state;
 #[derive(Component)]
 pub struct Title;
 
-pub(crate) fn setup(
-    mut next_state: ResMut<NextState<app_state::AppState>>,
-) {
+pub(crate) fn setup(mut next_state: ResMut<NextState<app_state::AppState>>) {
     next_state.set(app_state::AppState::InGame);
 }
 
