@@ -2,8 +2,8 @@ use bevy::prelude::*;
 
 pub(crate) mod straight;
 
-#[derive(Component)]
+#[derive(Component, Clone, Copy)]
 pub(crate) struct StraightBullet {
-    speed: f32,
-    angle: f32,
+    pub(crate) speed: f32,
+    pub(crate) angle: f32,
 }

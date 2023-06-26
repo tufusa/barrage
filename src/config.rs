@@ -1,3 +1,4 @@
+pub(crate) mod bullets;
 mod delta;
 mod title;
 

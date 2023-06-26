@@ -3,6 +3,7 @@ use bevy::prelude::*;
 pub(crate) mod bullet;
 pub(crate) mod bullets;
 pub(crate) mod delta;
+pub(crate) mod game_timer;
 mod gumowski_mira;
 pub(crate) mod tracer;
 
