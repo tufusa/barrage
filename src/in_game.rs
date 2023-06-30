@@ -3,8 +3,8 @@ use bevy::prelude::*;
 pub(crate) mod bullet;
 pub(crate) mod bullets;
 pub(crate) mod delta;
+pub(crate) mod enemy;
 pub(crate) mod game_timer;
-mod gumowski_mira;
 pub(crate) mod tracer;
 
 #[derive(Component)]
@@ -15,7 +15,8 @@ pub(crate) fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
-    delta::spawn(&mut commands, &mut meshes, &mut materials, InGame);
+    // delta::spawn(&mut commands, &mut meshes, &mut materials, InGame);
+    enemy::boss::spawn(&mut commands, &mut meshes, &mut materials);
 }
 
 pub(crate) fn cleanup(mut commands: Commands, in_game_query: Query<Entity, With<InGame>>) {

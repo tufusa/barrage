@@ -1,14 +1,14 @@
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
-use crate::{config, in_game::gumowski_mira};
+use crate::config;
 
 use super::tracer;
 
 #[derive(Component)]
 pub(crate) struct Delta;
 
-#[derive(Resource)]
-pub(crate) struct RunTimer(Timer);
+// #[derive(Resource)]
+// pub(crate) struct RunTimer(Timer);
 
 pub(crate) fn spawn(
     commands: &mut Commands,
@@ -40,22 +40,17 @@ pub(crate) fn spawn(
             },
             bundle,
         ));
-
-    commands.insert_resource(RunTimer(Timer::new(
-        std::time::Duration::from_millis(100),
-        TimerMode::Repeating,
-    )));
 }
 
-pub(crate) fn run_timer(time: Res<Time>, mut run_timer: ResMut<RunTimer>) {
-    run_timer.0.tick(time.delta());
-}
-
-pub(crate) fn run(mut delta_query: Query<&mut Transform, With<Delta>>, run_timer: Res<RunTimer>) {
-    if !run_timer.0.finished() {
-        return;
-    }
-
-    let mut transform = delta_query.single_mut();
-    transform.translation = gumowski_mira::f(transform.translation.truncate()).extend(0.);
-}
+// pub(crate) fn run_timer(time: Res<Time>, mut run_timer: ResMut<RunTimer>) {
+// run_timer.0.tick(time.delta());
+// }
+//
+// pub(crate) fn run(mut delta_query: Query<&mut Transform, With<Delta>>, run_timer: Res<RunTimer>) {
+// if !run_timer.0.finished() {
+// return;
+// }
+//
+// let mut transform = delta_query.single_mut();
+// transform.translation = gumowski_mira::f(transform.translation.truncate()).extend(0.);
+// }

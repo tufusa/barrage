@@ -1,18 +1,18 @@
+pub(crate) mod bullet_source;
+pub(crate) mod new_bullet;
+pub(crate) mod new_bullet_event_writer;
+pub(crate) mod new_bullet_timer;
+
 use bevy::prelude::*;
 
 pub(crate) trait Bullet: Component + Copy + Clone {
     fn run(&self, transform: &mut Transform, time: &Time);
 }
 
-pub(crate) struct NewBullet<B: Bullet> {
-    pub(crate) translation: Vec3,
-    pub(crate) bullet: B,
-}
-
 pub(crate) fn run<B: Bullet>(mut bullet_query: Query<(&B, &mut Transform)>, time: Res<Time>) {
     bullet_query.iter_mut().for_each(|(bullet, mut transform)| {
         bullet.run(&mut transform, &time);
-    })
+    });
 }
 
 pub(crate) fn despawn<B: Bullet>(
@@ -31,7 +31,6 @@ pub(crate) fn despawn<B: Bullet>(
 
         if x < -max.x || max.x < x || y < -max.y || max.y < y {
             commands.entity(entity).despawn();
-            println!("despawn");
         }
-    })
+    });
 }

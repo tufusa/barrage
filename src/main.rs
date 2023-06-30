@@ -5,13 +5,14 @@ use std::f32::consts::PI;
 use app_state::AppState;
 use bevy::prelude::*;
 use in_game::{
-    bullet::{self, NewBullet},
+    bullet::{self, new_bullet::NewBullet, new_bullet_event_writer, new_bullet_timer},
     bullets::{self, StraightBullet},
 };
 
 mod app_state;
 mod config;
 mod font;
+mod hierarchy;
 mod in_game;
 mod plugins;
 mod title;
@@ -28,13 +29,18 @@ fn main() {
         .add_systems(
             (
                 in_game::game_timer::tick,
-                in_game::delta::run,
-                in_game::delta::run_timer,
                 in_game::tracer::trace,
+                in_game::enemy::boss::run,
                 debug,
+                hierarchy::sync::<in_game::enemy::Enemy>,
             )
                 .in_set(OnUpdate(AppState::InGame)),
         )
+        .add_systems(
+            (new_bullet_event_writer::new_bullet_event_writer::<StraightBullet>,)
+                .in_set(OnUpdate(AppState::InGame)),
+        ) // Bullet spawn event writer
+        .add_systems((new_bullet_timer::tick::<StraightBullet>,).in_set(OnUpdate(AppState::InGame))) // Bullet spawn timer
         .add_systems((bullets::straight::spawn,).in_set(OnUpdate(AppState::InGame))) // Bullet spawn
         .add_systems((bullet::run::<StraightBullet>,).in_set(OnUpdate(AppState::InGame))) // Bullet run
         .add_systems((bullet::despawn::<StraightBullet>,).in_set(OnUpdate(AppState::InGame))) // Bullet despawn
@@ -47,17 +53,17 @@ fn setup(mut commands: Commands, server: Res<AssetServer>) {
     commands.spawn(camera);
     commands.insert_resource(font::UI(server.load("fonts/Roboto-Thin.ttf")));
     in_game::game_timer::setup(&mut commands);
+    in_game::bullet::new_bullet_timer::setup(&mut commands);
 }
 
 fn debug(mut new_bullet_event: EventWriter<NewBullet<StraightBullet>>, input: Res<Input<KeyCode>>) {
     if input.pressed(KeyCode::Space) {
-        println!("pressed");
         new_bullet_event.send(NewBullet {
             bullet: StraightBullet {
-                speed: 100.,
+                speed: 200.,
                 angle: PI / 4.,
             },
-            translation: Vec3::ZERO,
+            translation: Vec2::ZERO,
         })
     }
 }
