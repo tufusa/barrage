@@ -259,15 +259,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "barrage"
-version = "0.1.0"
-dependencies = [
- "bevy",
- "bevy_embedded_assets",
- "bevy_prototype_lyon",
-]
-
-[[package]]
 name = "base64"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1327,6 +1318,15 @@ dependencies = [
  "bitflags",
  "libloading",
  "winapi",
+]
+
+[[package]]
+name = "danmaku"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "bevy_embedded_assets",
+ "bevy_prototype_lyon",
 ]
 
 [[package]]

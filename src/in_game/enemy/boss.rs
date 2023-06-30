@@ -4,7 +4,10 @@ use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
 use crate::{
     config,
-    in_game::{bullet, bullets::StraightBullet},
+    in_game::{
+        bullet::{self, bullet_spawn_clock::BulletSpawnClock},
+        bullets::StraightBullet,
+    },
 };
 
 #[derive(Component)]
@@ -28,29 +31,30 @@ pub(crate) fn spawn(
         }))
         .insert((super::Enemy, Boss))
         .with_children(|parent| {
-            let bullets: Vec<StraightBullet> = vec![
-                StraightBullet::new(150., PI / 4. * 1.),
-                StraightBullet::new(150., PI / 4. * 2.),
-                StraightBullet::new(150., PI / 4. * 3.),
-                StraightBullet::new(150., PI / 4. * 4.),
-                StraightBullet::new(150., PI / 4. * 5.),
-                StraightBullet::new(150., PI / 4. * 6.),
-                StraightBullet::new(150., PI / 4. * 7.),
-                StraightBullet::new(150., PI / 4. * 8.),
-                StraightBullet::new(250., PI / 4. * 1.),
-                StraightBullet::new(250., PI / 4. * 2.),
-                StraightBullet::new(250., PI / 4. * 3.),
-                StraightBullet::new(250., PI / 4. * 4.),
-                StraightBullet::new(250., PI / 4. * 5.),
-                StraightBullet::new(250., PI / 4. * 6.),
-                StraightBullet::new(250., PI / 4. * 7.),
-                StraightBullet::new(250., PI / 4. * 8.),
+            let bullets: Vec<(StraightBullet, u64)> = vec![
+                (StraightBullet::new(150., PI / 4. * 1.), 100),
+                (StraightBullet::new(150., PI / 4. * 2.), 100),
+                (StraightBullet::new(150., PI / 4. * 3.), 100),
+                (StraightBullet::new(150., PI / 4. * 4.), 100),
+                (StraightBullet::new(150., PI / 4. * 5.), 100),
+                (StraightBullet::new(150., PI / 4. * 6.), 100),
+                (StraightBullet::new(150., PI / 4. * 7.), 100),
+                (StraightBullet::new(150., PI / 4. * 8.), 100),
+                (StraightBullet::new(250., PI / 4. * 1.), 200),
+                (StraightBullet::new(250., PI / 4. * 2.), 200),
+                (StraightBullet::new(250., PI / 4. * 3.), 200),
+                (StraightBullet::new(250., PI / 4. * 4.), 200),
+                (StraightBullet::new(250., PI / 4. * 5.), 200),
+                (StraightBullet::new(250., PI / 4. * 6.), 200),
+                (StraightBullet::new(250., PI / 4. * 7.), 200),
+                (StraightBullet::new(250., PI / 4. * 8.), 200),
             ];
 
-            bullets.iter().for_each(|bullet| {
+            bullets.iter().for_each(|(bullet, millis)| {
                 parent
                     .spawn(SpatialBundle::default())
-                    .insert(bullet::bullet_source::BulletSource(*bullet));
+                    .insert(bullet::bullet_source::BulletSource { bullet: *bullet })
+                    .insert(BulletSpawnClock::new(*millis));
             });
         });
 }
