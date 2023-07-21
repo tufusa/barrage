@@ -17,6 +17,7 @@ impl Plugin for super::Base {
                         title: config::Window::TITLE.into(),
                         resolution: config::Window::SIZE.into(),
                         resizable: false,
+                        position: WindowPosition::Automatic,
                         ..Default::default()
                     }),
                     ..Default::default()

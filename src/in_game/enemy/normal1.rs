@@ -72,3 +72,16 @@ pub(crate) fn run(
         transform.rotate_z(angle);
     })
 }
+
+pub(crate) fn check_despawn(
+    mut commands: Commands,
+    normal1_query: Query<(&HP, Entity), With<Normal1>>,
+) {
+    normal1_query.for_each(|(hp, entity)| {
+        if hp.hp() > 0 {
+            return;
+        }
+
+        commands.entity(entity).despawn_recursive();
+    })
+}

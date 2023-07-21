@@ -4,7 +4,7 @@ mod bullet_run_systems;
 mod bullet_spawn_clock_systems;
 mod bullet_spawn_systems;
 mod delta_update_systems;
-mod enemy_run_systems;
+mod enemy_update_systems;
 mod in_game_update_systems;
 mod new_bullet_event_writer_systems;
 mod new_bullet_events;

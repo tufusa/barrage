@@ -25,9 +25,10 @@ fn main() {
         .run();
 }
 
-fn setup(mut commands: Commands, server: Res<AssetServer>) {
+fn setup(mut commands: Commands, server: Res<AssetServer>, mut window_query: Query<&mut Window>) {
     let camera = Camera2dBundle::default();
     commands.spawn(camera);
     commands.insert_resource(font::UI(server.load("fonts/Roboto-Thin.ttf")));
     in_game::game_timer::setup(&mut commands);
+    window_query.single_mut().cursor.visible = false;
 }

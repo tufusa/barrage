@@ -81,3 +81,13 @@ pub(crate) fn run(mut boss_query: Query<&mut Transform, With<Boss>>, time: Res<T
         transform.rotate_z(time.delta_seconds() * local_angular_velocity);
     })
 }
+
+pub(crate) fn check_despawn(mut commands: Commands, boss_query: Query<(&HP, Entity), With<Boss>>) {
+    boss_query.for_each(|(hp, entity)| {
+        if hp.hp() > 0 {
+            return;
+        }
+
+        commands.entity(entity).despawn_recursive();
+    })
+}
