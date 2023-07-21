@@ -15,8 +15,9 @@ pub(crate) fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
-    // delta::spawn(&mut commands, &mut meshes, &mut materials, InGame);
-    enemy::boss::spawn(&mut commands, &mut meshes, &mut materials);
+    delta::spawn(&mut commands, InGame);
+    // enemy::boss::spawn(&mut commands, &mut meshes, &mut materials, InGame);
+    enemy::normal1::spawn(&mut commands, &mut meshes, &mut materials, InGame);
 }
 
 pub(crate) fn cleanup(mut commands: Commands, in_game_query: Query<Entity, With<InGame>>) {

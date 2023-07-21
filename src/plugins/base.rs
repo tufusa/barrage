@@ -14,7 +14,8 @@ impl Plugin for super::Base {
                     primary_window: Some(Window {
                         present_mode: PresentMode::AutoVsync,
                         mode: WindowMode::Windowed,
-                        title: config::Title::TITLE.into(),
+                        title: config::Window::TITLE.into(),
+                        resolution: config::Window::SIZE.into(),
                         resizable: false,
                         ..Default::default()
                     }),
@@ -32,6 +33,7 @@ impl Plugin for super::Base {
                 present_mode: PresentMode::AutoVsync,
                 mode: WindowMode::Windowed,
                 title: config::Title::TITLE.into(),
+                resolution: config::Window::SIZE.into(),
                 resizable: false,
                 ..Default::default()
             }),

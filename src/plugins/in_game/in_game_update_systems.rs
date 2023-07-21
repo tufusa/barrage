@@ -7,8 +7,6 @@ impl Plugin for super::InGameUpdateSystems {
         app.add_systems(
             (
                 in_game::game_timer::tick,
-                in_game::tracer::trace,
-                in_game::enemy::boss::run,
                 hierarchy::sync::<in_game::enemy::Enemy>,
             )
                 .in_set(OnUpdate(AppState::InGame)),
@@ -17,6 +15,8 @@ impl Plugin for super::InGameUpdateSystems {
         .add_plugin(super::BulletSpawnClockSystems)
         .add_plugin(super::BulletSpawnSystems)
         .add_plugin(super::BulletRunSystems)
-        .add_plugin(super::BulletDespawnSystems);
+        .add_plugin(super::BulletDespawnSystems)
+        .add_plugin(super::EnemyRunSystems)
+        .add_plugin(super::DeltaUpdateSystems);
     }
 }

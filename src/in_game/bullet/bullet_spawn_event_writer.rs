@@ -21,6 +21,7 @@ pub(crate) fn bullet_spawn_event_writer<B: Bullet>(
             new_bullet_event.send(NewBullet {
                 bullet: bullet_source.bullet,
                 translation: transform.translation.truncate(),
+                angle: transform.rotation.to_euler(EulerRot::XYZ).2 + bullet_source.angle,
             })
         })
 }

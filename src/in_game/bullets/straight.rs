@@ -12,8 +12,8 @@ use crate::{
 use super::StraightBullet;
 
 impl bullets::StraightBullet {
-    pub(crate) fn new(speed: f32, angle: f32) -> Self {
-        return Self { speed, angle };
+    pub(crate) fn new(speed: f32) -> Self {
+        return Self { speed, angle: 0. };
     }
 }
 
@@ -32,6 +32,8 @@ impl bullet::Bullet for bullets::StraightBullet {
         mut materials: ResMut<Assets<ColorMaterial>>,
     ) {
         new_bullet_event.iter().for_each(|new_bullet| {
+            let mut bullet = new_bullet.bullet;
+            bullet.angle = new_bullet.angle;
             commands
                 .spawn(MaterialMesh2dBundle {
                     mesh: meshes.add(config::bullets::Straight::SHAPE.into()).into(),
@@ -43,7 +45,7 @@ impl bullet::Bullet for bullets::StraightBullet {
                     },
                     ..Default::default()
                 })
-                .insert(new_bullet.bullet)
+                .insert(bullet)
                 .insert(in_game::InGame);
         });
     }
