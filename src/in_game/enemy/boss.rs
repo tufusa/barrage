@@ -5,8 +5,9 @@ use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 use crate::{
     config,
     in_game::{
-        bullet::{self, bullet_spawn_clock::BulletSpawnClock},
+        bullet::{self, bullet_spawn_clock::BulletSpawnClock, collision::BulletCollidable},
         bullets::StraightBullet,
+        hp::HP,
     },
 };
 
@@ -30,7 +31,7 @@ pub(crate) fn spawn(
             scale: config::enemy::Boss::SIZE,
             ..Default::default()
         }))
-        .insert((super::Enemy, Boss))
+        .insert((super::Enemy, HP::new(200), Boss, BulletCollidable::Enemy))
         .insert(bundle)
         .with_children(|parent| {
             let bullets: Vec<(StraightBullet, f32, u64)> = vec![

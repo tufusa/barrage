@@ -6,8 +6,9 @@ use crate::{
     config,
     in_game::{
         self,
-        bullet::{self, bullet_spawn_clock::BulletSpawnClock},
+        bullet::{self, bullet_spawn_clock::BulletSpawnClock, collision::BulletCollidable},
         bullets::StraightBullet,
+        hp::HP,
     },
 };
 
@@ -18,6 +19,7 @@ pub(crate) fn spawn(
     commands: &mut Commands,
     meshes: &mut ResMut<Assets<Mesh>>,
     materials: &mut ResMut<Assets<ColorMaterial>>,
+    translation: Vec3,
     bundle: impl Bundle,
 ) {
     commands
@@ -27,15 +29,18 @@ pub(crate) fn spawn(
             ..Default::default()
         })
         .insert(SpatialBundle::from_transform(Transform {
-            translation: (100., 300., 1.).into(),
+            translation,
             scale: config::enemy::Normal1::SIZE,
             ..Default::default()
         }))
-        .insert((super::Enemy, Normal1))
+        .insert((super::Enemy, HP::new(5), Normal1, BulletCollidable::Enemy))
         .insert(bundle)
         .with_children(|parent| {
-            let bullets: Vec<(StraightBullet, f32, u64)> =
-                vec![(StraightBullet::new(150.), -PI / 2. * 0., 500)];
+            let bullets: Vec<(StraightBullet, f32, u64)> = vec![
+                (StraightBullet::new(150.), -PI / 8., 1000),
+                (StraightBullet::new(150.), 0., 1000),
+                (StraightBullet::new(150.), PI / 8., 1000),
+            ];
 
             bullets.iter().for_each(|(bullet, angle, millis)| {
                 parent
@@ -54,7 +59,6 @@ pub(crate) fn run(
     delta_query: Query<&Transform, (With<in_game::delta::Delta>, Without<Normal1>)>,
     time: Res<Time>,
 ) {
-    // let local_angular_velocity = 0.01;
     let player = delta_query.single();
 
     normal1_query.iter_mut().for_each(|mut transform| {
@@ -62,7 +66,9 @@ pub(crate) fn run(
             .right()
             .truncate()
             .angle_between(player.translation.sub(transform.translation).truncate());
-        transform.translation.y -= 50. * time.delta_seconds();
+        if transform.translation.y > 250. {
+            transform.translation.y -= 50. * time.delta_seconds();
+        }
         transform.rotate_z(angle);
     })
 }

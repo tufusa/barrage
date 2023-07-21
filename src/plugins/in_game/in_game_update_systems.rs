@@ -8,6 +8,7 @@ impl Plugin for super::InGameUpdateSystems {
             (
                 in_game::game_timer::tick,
                 hierarchy::sync::<in_game::enemy::Enemy>,
+                hierarchy::sync::<in_game::delta::Delta>,
             )
                 .in_set(OnUpdate(AppState::InGame)),
         )
@@ -17,6 +18,8 @@ impl Plugin for super::InGameUpdateSystems {
         .add_plugin(super::BulletRunSystems)
         .add_plugin(super::BulletDespawnSystems)
         .add_plugin(super::EnemyRunSystems)
-        .add_plugin(super::DeltaUpdateSystems);
+        .add_plugin(super::DeltaUpdateSystems)
+        .add_plugin(super::PhaseSystems)
+        .add_plugin(super::BulletCollisionSystems);
     }
 }

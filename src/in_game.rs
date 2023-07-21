@@ -5,19 +5,16 @@ pub(crate) mod bullets;
 pub(crate) mod delta;
 pub(crate) mod enemy;
 pub(crate) mod game_timer;
-pub(crate) mod tracer;
+pub(crate) mod hp;
+pub(crate) mod phase;
+mod player_bullet;
 
 #[derive(Component)]
 pub(crate) struct InGame;
 
-pub(crate) fn setup(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<ColorMaterial>>,
-) {
+pub(crate) fn setup(mut commands: Commands) {
     delta::spawn(&mut commands, InGame);
     // enemy::boss::spawn(&mut commands, &mut meshes, &mut materials, InGame);
-    enemy::normal1::spawn(&mut commands, &mut meshes, &mut materials, InGame);
 }
 
 pub(crate) fn cleanup(mut commands: Commands, in_game_query: Query<Entity, With<InGame>>) {

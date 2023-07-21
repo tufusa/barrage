@@ -1,15 +1,16 @@
 pub(crate) mod bullet_source;
 pub(crate) mod bullet_spawn_clock;
-pub(crate) mod new_bullet;
-// pub(crate) mod new_bullet_event_writer;
-// pub(crate) mod new_bullet_timer;
 pub(crate) mod bullet_spawn_event_writer;
+pub(crate) mod collision;
+pub(crate) mod new_bullet;
 
 use bevy::prelude::*;
 
 use self::new_bullet::NewBullet;
 
 pub(crate) trait Bullet: Component + Copy + Clone {
+    fn damage() -> u32;
+
     fn run(bullet_query: Query<(&Self, &mut Transform)>, time: Res<Time>);
 
     fn spawn(
@@ -18,9 +19,13 @@ pub(crate) trait Bullet: Component + Copy + Clone {
         meshes: ResMut<Assets<Mesh>>,
         materials: ResMut<Assets<ColorMaterial>>,
     );
+
+    fn despawn(commands: &mut Commands, entity: Entity) {
+        commands.entity(entity).despawn();
+    }
 }
 
-pub(crate) fn despawn<B: Bullet>(
+pub(crate) fn force_despawn<B: Bullet>(
     mut commands: Commands,
     bullet_query: Query<(Entity, &Transform), With<B>>,
     window_query: Query<&Window>,

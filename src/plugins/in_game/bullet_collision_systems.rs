@@ -3,17 +3,17 @@ use bevy::prelude::*;
 use crate::{
     app_state::AppState,
     in_game::{
-        bullet::force_despawn,
+        bullet::collision::collision,
         bullets::{PlayerStraightBullet, StraightBullet},
     },
 };
 
-impl Plugin for super::BulletDespawnSystems {
+impl Plugin for super::BulletCollisionSystems {
     fn build(&self, app: &mut App) {
         app.add_systems(
             (
-                force_despawn::<StraightBullet>,
-                force_despawn::<PlayerStraightBullet>,
+                collision::<StraightBullet>,
+                collision::<PlayerStraightBullet>,
             )
                 .in_set(OnUpdate(AppState::InGame)),
         );

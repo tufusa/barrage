@@ -1,5 +1,7 @@
 use bevy::prelude::*;
 
+use crate::in_game::delta::Delta;
+
 use super::{
     bullet_source::BulletSource,
     bullet_spawn_clock::BulletSpawnClock,
@@ -8,7 +10,7 @@ use super::{
 };
 
 pub(crate) fn bullet_spawn_event_writer<B: Bullet>(
-    bullet_source_query: Query<(&Transform, &BulletSource<B>, &BulletSpawnClock)>,
+    bullet_source_query: Query<(&Transform, &BulletSource<B>, &BulletSpawnClock), Without<Delta>>,
     mut new_bullet_event: EventWriter<new_bullet::NewBullet<B>>,
 ) {
     bullet_source_query
