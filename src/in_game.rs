@@ -7,7 +7,7 @@ pub(crate) mod enemy;
 pub(crate) mod game_timer;
 pub(crate) mod hp;
 pub(crate) mod phase;
-mod player_bullet;
+pub(crate) mod player_bullet;
 
 #[derive(Component)]
 pub(crate) struct InGame;

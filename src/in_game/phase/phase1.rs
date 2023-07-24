@@ -2,6 +2,8 @@ use bevy::prelude::*;
 
 use crate::in_game::{enemy, InGame};
 
+use super::Phase;
+
 #[derive(Component)]
 pub(crate) struct Phase1;
 
@@ -10,14 +12,14 @@ pub(crate) fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
-    let enemy1s: Vec<Vec3> = vec![
+    let enemys: Vec<Vec3> = vec![
         Vec3::new(-150., 350., 0.),
         Vec3::new(-60., 350., 0.),
         Vec3::new(60., 350., 0.),
         Vec3::new(150., 350., 0.),
     ];
 
-    enemy1s.iter().for_each(|translation| {
+    enemys.iter().for_each(|translation| {
         enemy::normal1::spawn(
             &mut commands,
             &mut meshes,
@@ -28,8 +30,16 @@ pub(crate) fn setup(
     });
 }
 
-pub(crate) fn cleanup(mut commands: Commands, phase1_query: Query<Entity, With<Phase1>>) {
-    phase1_query.for_each(|entity| {
+pub(crate) fn check_clear(enemy_query: Query<&Phase1>, mut next_state: ResMut<NextState<Phase>>) {
+    if !enemy_query.is_empty() {
+        return;
+    }
+
+    next_state.set(Phase::Phase2);
+}
+
+pub(crate) fn cleanup(mut commands: Commands, phase_entity_query: Query<Entity, With<Phase1>>) {
+    phase_entity_query.for_each(|entity| {
         commands.entity(entity).despawn();
     })
 }

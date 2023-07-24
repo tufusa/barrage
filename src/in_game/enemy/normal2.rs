@@ -13,7 +13,7 @@ use crate::{
 };
 
 #[derive(Component)]
-pub(crate) struct Normal1;
+pub(crate) struct Normal2;
 
 pub(crate) fn spawn(
     commands: &mut Commands,
@@ -33,11 +33,14 @@ pub(crate) fn spawn(
             scale: config::enemy::Normal1::SIZE,
             ..Default::default()
         }))
-        .insert((super::Enemy, HP::new(5), Normal1, BulletCollidable::Enemy))
+        .insert((super::Enemy, HP::new(5), Normal2, BulletCollidable::Enemy))
         .insert(bundle)
         .with_children(|parent| {
-            let bullets: Vec<(StraightBullet, f32, u64)> =
-                vec![(StraightBullet::new(150.), 0., 1000)];
+            let bullets: Vec<(StraightBullet, f32, u64)> = vec![
+                (StraightBullet::new(150.), -PI / 8., 800),
+                (StraightBullet::new(150.), 0., 800),
+                (StraightBullet::new(150.), PI / 8., 800),
+            ];
 
             bullets.iter().for_each(|(bullet, angle, millis)| {
                 parent
@@ -52,8 +55,8 @@ pub(crate) fn spawn(
 }
 
 pub(crate) fn run(
-    mut enemy_query: Query<&mut Transform, With<Normal1>>,
-    delta_query: Query<&Transform, (With<in_game::delta::Delta>, Without<Normal1>)>,
+    mut enemy_query: Query<&mut Transform, With<Normal2>>,
+    delta_query: Query<&Transform, (With<in_game::delta::Delta>, Without<Normal2>)>,
     time: Res<Time>,
 ) {
     let player = delta_query.single();
@@ -72,7 +75,7 @@ pub(crate) fn run(
 
 pub(crate) fn check_despawn(
     mut commands: Commands,
-    normal1_query: Query<(&HP, Entity), With<Normal1>>,
+    normal1_query: Query<(&HP, Entity), With<Normal2>>,
 ) {
     normal1_query.for_each(|(hp, entity)| {
         if hp.hp() > 0 {
