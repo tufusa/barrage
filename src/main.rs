@@ -32,7 +32,7 @@ fn setup(mut commands: Commands, server: Res<AssetServer>, mut window_query: Que
     commands.spawn(camera);
     commands.insert_resource(font::UI(server.load("fonts/Roboto-Thin.ttf")));
     in_game::game_timer::setup(&mut commands);
-    window_query.single_mut().cursor.visible = false;
+    window_query.single_mut().cursor.icon = CursorIcon::Crosshair;
 }
 
 fn debug(
@@ -40,5 +40,5 @@ fn debug(
     camera_query: Query<(&Camera, &GlobalTransform)>,
 ) {
     let Some(cursor) = utility::cursor::position(window_query, camera_query) else { return; };
-    println!("{:?}", cursor);
+    // println!("{:?}", cursor);
 }

@@ -1,9 +1,9 @@
 use std::f32::consts::PI;
 
-use bevy::prelude::*;
+use bevy::{prelude::*, window::*};
 use bevy_prototype_lyon::prelude::{Fill, ShapeBundle, Stroke};
 
-use crate::config;
+use crate::{config, utility::cursor};
 
 use super::{
     bullet::{
@@ -65,4 +65,18 @@ fn dir(input: &Res<Input<KeyCode>>) -> Vec2 {
         dir += Vec2::X;
     }
     dir.normalize_or_zero()
+}
+
+pub(crate) fn sync_cursor(
+    mut delta_query: Query<&mut Transform, With<Delta>>,
+    window_query: Query<&Window, With<PrimaryWindow>>,
+    camera_query: Query<(&Camera, &GlobalTransform)>,
+) {
+    let mut delta = delta_query.single_mut();
+    let Some(cursor) = cursor::position(window_query, camera_query) else { return; };
+    let angle = delta
+        .up()
+        .truncate()
+        .angle_between(cursor - delta.translation.truncate());
+    delta.rotate_z(angle);
 }
