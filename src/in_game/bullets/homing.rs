@@ -1,3 +1,5 @@
+use std::ops::Sub;
+
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
 use crate::config;
@@ -6,15 +8,15 @@ use crate::in_game::{
     bullet::{self, new_bullet::NewBullet},
 };
 
-use super::StraightBullet;
+use super::HomingBullet;
 
-impl StraightBullet {
+impl HomingBullet {
     pub(crate) fn new(speed: f32) -> Self {
         return Self { speed, angle: 0. };
     }
 }
 
-impl bullet::Bullet for StraightBullet {
+impl bullet::Bullet for HomingBullet {
     fn damage() -> u32 {
         let damage = 1;
         damage
@@ -22,18 +24,29 @@ impl bullet::Bullet for StraightBullet {
 
     fn run(
         mut bullet_query: Query<(&mut Self, &mut Transform)>,
-        _player_query: Query<&Transform, (With<in_game::delta::Delta>, Without<StraightBullet>)>,
+        player_query: Query<
+            '_,
+            '_,
+            &Transform,
+            (With<in_game::delta::Delta>, Without<HomingBullet>),
+        >,
         time: Res<Time>,
     ) {
-        bullet_query.iter_mut().for_each(|(bullet, mut transform)| {
-            transform.translation +=
-                bullet.speed * Vec2::from_angle(bullet.angle).extend(0.) * time.delta_seconds();
-        })
+        let player = player_query.single();
+        bullet_query
+            .iter_mut()
+            .for_each(|(mut bullet, mut transform)| {
+                bullet.angle += Vec2::from_angle(bullet.angle)
+                    .angle_between(player.translation.sub(transform.translation).truncate())
+                    * 0.5;
+                transform.translation +=
+                    bullet.speed * Vec2::from_angle(bullet.angle).extend(0.) * time.delta_seconds();
+            });
     }
 
     fn spawn(
         mut commands: Commands,
-        mut new_bullet_event: EventReader<NewBullet<StraightBullet>>,
+        mut new_bullet_event: EventReader<NewBullet<HomingBullet>>,
         mut meshes: ResMut<Assets<Mesh>>,
         mut materials: ResMut<Assets<ColorMaterial>>,
     ) {

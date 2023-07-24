@@ -22,7 +22,11 @@ pub(crate) fn spawn(commands: &mut Commands, bundle: impl Bundle) {
         .spawn((
             ShapeBundle {
                 path: config::Delta::path(),
-                transform: Transform::from_scale(config::Delta::SIZE),
+                transform: Transform {
+                    rotation: Quat::from_rotation_z(PI / 2.),
+                    scale: config::Delta::SIZE,
+                    ..Default::default()
+                },
                 ..Default::default()
             },
             Stroke::new(config::Delta::COLOR, 0.1),
@@ -33,7 +37,7 @@ pub(crate) fn spawn(commands: &mut Commands, bundle: impl Bundle) {
             parent
                 .spawn(SpatialBundle::default())
                 .insert(BulletSource {
-                    angle: PI / 2.,
+                    angle: 0.,
                     bullet: PlayerStraightBullet::new(200.),
                 })
                 .insert(BulletSpawnClock::new(300));
@@ -75,7 +79,7 @@ pub(crate) fn sync_cursor(
     let mut delta = delta_query.single_mut();
     let Some(cursor) = cursor::position(window_query, camera_query) else { return; };
     let angle = delta
-        .up()
+        .right()
         .truncate()
         .angle_between(cursor - delta.translation.truncate());
     delta.rotate_z(angle);

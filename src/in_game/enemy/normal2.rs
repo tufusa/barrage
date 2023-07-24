@@ -66,10 +66,10 @@ pub(crate) fn run(
             .right()
             .truncate()
             .angle_between(player.translation.sub(transform.translation).truncate());
+        transform.rotate_z(angle);
         if transform.translation.y > 250. {
             transform.translation.y -= 50. * time.delta_seconds();
         }
-        transform.rotate_z(angle);
     })
 }
 

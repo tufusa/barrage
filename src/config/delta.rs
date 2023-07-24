@@ -20,9 +20,9 @@ impl Delta {
 
     pub(crate) fn path() -> Path {
         let mut path_builder = PathBuilder::new();
-        path_builder.move_to(Vec2::new(f32::cos(PI / 6. * 3.), f32::sin(PI / 6. * 3.)) * 3.);
-        path_builder.line_to(Vec2::new(f32::cos(PI / 6. * 7.), f32::sin(PI / 6. * 7.)));
-        path_builder.line_to(Vec2::new(f32::cos(PI / 6. * 11.), f32::sin(PI / 6. * 11.)));
+        path_builder.move_to(Vec2::new(f32::cos(PI / 3. * 0.), f32::sin(PI / 3. * 0.)) * 3.);
+        path_builder.line_to(Vec2::new(f32::cos(PI / 3. * 2.), f32::sin(PI / 3. * 2.)));
+        path_builder.line_to(Vec2::new(f32::cos(PI / 3. * 4.), f32::sin(PI / 3. * 4.)));
         path_builder.close();
 
         path_builder.build()

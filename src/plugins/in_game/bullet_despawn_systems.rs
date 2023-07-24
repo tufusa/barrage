@@ -4,7 +4,7 @@ use crate::{
     app_state::AppState,
     in_game::{
         bullet::force_despawn,
-        bullets::{PlayerStraightBullet, StraightBullet},
+        bullets::{HomingBullet, PlayerStraightBullet, StraightBullet},
     },
 };
 
@@ -14,6 +14,7 @@ impl Plugin for super::BulletDespawnSystems {
             (
                 force_despawn::<StraightBullet>,
                 force_despawn::<PlayerStraightBullet>,
+                force_despawn::<HomingBullet>,
             )
                 .in_set(OnUpdate(AppState::InGame)),
         );

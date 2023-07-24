@@ -35,7 +35,7 @@ pub(crate) fn check_clear(enemy_query: Query<&Phase2>, mut next_state: ResMut<Ne
         return;
     }
 
-    next_state.set(Phase::Phase2);
+    next_state.set(Phase::Phase3);
 }
 
 pub(crate) fn cleanup(mut commands: Commands, phase_entity_query: Query<Entity, With<Phase2>>) {

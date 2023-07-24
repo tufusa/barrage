@@ -4,7 +4,7 @@ use crate::{
     app_state::AppState,
     in_game::{
         bullet::bullet_spawn_event_writer::bullet_spawn_event_writer,
-        bullets::{PlayerStraightBullet, StraightBullet},
+        bullets::{HomingBullet, PlayerStraightBullet, StraightBullet},
     },
 };
 
@@ -14,6 +14,7 @@ impl Plugin for super::NewBulletEventWriterSystems {
             (
                 bullet_spawn_event_writer::<StraightBullet>,
                 bullet_spawn_event_writer::<PlayerStraightBullet>,
+                bullet_spawn_event_writer::<HomingBullet>,
             )
                 .in_set(OnUpdate(AppState::InGame)),
         );

@@ -6,12 +6,18 @@ pub(crate) mod new_bullet;
 
 use bevy::prelude::*;
 
+use crate::in_game::delta::Delta;
+
 use self::new_bullet::NewBullet;
 
 pub(crate) trait Bullet: Component + Copy + Clone {
     fn damage() -> u32;
 
-    fn run(bullet_query: Query<(&Self, &mut Transform)>, time: Res<Time>);
+    fn run(
+        bullet_query: Query<(&mut Self, &mut Transform)>,
+        player_query: Query<&Transform, (With<Delta>, Without<Self>)>,
+        time: Res<Time>,
+    );
 
     fn spawn(
         commands: Commands,

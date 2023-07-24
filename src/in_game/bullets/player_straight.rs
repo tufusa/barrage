@@ -18,7 +18,14 @@ impl PlayerStraightBullet {
 }
 
 impl bullet::Bullet for PlayerStraightBullet {
-    fn run(mut bullet_query: Query<(&Self, &mut Transform)>, time: Res<Time>) {
+    fn run(
+        mut bullet_query: Query<(&mut Self, &mut Transform)>,
+        _player_query: Query<
+            &Transform,
+            (With<in_game::delta::Delta>, Without<PlayerStraightBullet>),
+        >,
+        time: Res<Time>,
+    ) {
         bullet_query.iter_mut().for_each(|(bullet, mut transform)| {
             transform.translation +=
                 bullet.speed * Vec2::from_angle(bullet.angle).extend(0.) * time.delta_seconds();

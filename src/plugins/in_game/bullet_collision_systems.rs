@@ -4,7 +4,7 @@ use crate::{
     app_state::AppState,
     in_game::{
         bullet::collision::collision,
-        bullets::{PlayerStraightBullet, StraightBullet},
+        bullets::{HomingBullet, PlayerStraightBullet, StraightBullet},
     },
 };
 
@@ -14,6 +14,7 @@ impl Plugin for super::BulletCollisionSystems {
             (
                 collision::<StraightBullet>,
                 collision::<PlayerStraightBullet>,
+                collision::<HomingBullet>,
             )
                 .in_set(OnUpdate(AppState::InGame)),
         );

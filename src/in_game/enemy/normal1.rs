@@ -7,7 +7,7 @@ use crate::{
     in_game::{
         self,
         bullet::{self, bullet_spawn_clock::BulletSpawnClock, collision::BulletCollidable},
-        bullets::StraightBullet,
+        bullets::{HomingBullet, StraightBullet},
         hp::HP,
     },
 };
@@ -36,8 +36,7 @@ pub(crate) fn spawn(
         .insert((super::Enemy, HP::new(5), Normal1, BulletCollidable::Enemy))
         .insert(bundle)
         .with_children(|parent| {
-            let bullets: Vec<(StraightBullet, f32, u64)> =
-                vec![(StraightBullet::new(150.), 0., 1000)];
+            let bullets: Vec<(HomingBullet, f32, u64)> = vec![(HomingBullet::new(150.), 0., 1000)];
 
             bullets.iter().for_each(|(bullet, angle, millis)| {
                 parent
