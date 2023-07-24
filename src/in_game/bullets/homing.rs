@@ -3,6 +3,7 @@ use std::ops::Sub;
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
 use crate::config;
+use crate::in_game::bullet::collision::BulletCollidable;
 use crate::in_game::{
     self,
     bullet::{self, new_bullet::NewBullet},
@@ -38,7 +39,7 @@ impl bullet::Bullet for HomingBullet {
             .for_each(|(mut bullet, mut transform)| {
                 bullet.angle += Vec2::from_angle(bullet.angle)
                     .angle_between(player.translation.sub(transform.translation).truncate())
-                    * 0.5;
+                    * 0.2;
                 transform.translation +=
                     bullet.speed * Vec2::from_angle(bullet.angle).extend(0.) * time.delta_seconds();
             });
@@ -65,7 +66,8 @@ impl bullet::Bullet for HomingBullet {
                     ..Default::default()
                 })
                 .insert(bullet)
-                .insert(in_game::InGame);
+                .insert(in_game::InGame)
+                .insert(BulletCollidable::Enemy);
         });
     }
 }

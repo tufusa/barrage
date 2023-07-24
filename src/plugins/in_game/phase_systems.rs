@@ -13,6 +13,7 @@ impl Plugin for super::PhaseSystems {
             .add_system(phase2::check_clear.in_set(OnUpdate(Phase::Phase2)))
             .add_system(phase2::cleanup.in_schedule(OnExit(Phase::Phase2)))
             .add_system(phase3::setup.in_schedule(OnEnter(Phase::Phase3)))
+            .add_system(phase3::check_clear.in_set(OnUpdate(Phase::Phase3)))
             .add_system(phase3::cleanup.in_schedule(OnExit(Phase::Phase3)))
             .add_system(phase4::setup.in_schedule(OnEnter(Phase::Phase4)))
             .add_system(phase4::cleanup.in_schedule(OnExit(Phase::Phase4)))

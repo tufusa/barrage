@@ -1,4 +1,4 @@
-use std::ops::Sub;
+use std::{f32::consts::PI, ops::Sub};
 
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
@@ -7,13 +7,13 @@ use crate::{
     in_game::{
         self,
         bullet::{self, bullet_spawn_clock::BulletSpawnClock, collision::BulletCollidable},
-        bullets::StraightBullet,
+        bullets::HomingBullet,
         hp::HP,
     },
 };
 
 #[derive(Component)]
-pub(crate) struct Normal1;
+pub(crate) struct Normal3;
 
 pub(crate) fn spawn(
     commands: &mut Commands,
@@ -33,11 +33,14 @@ pub(crate) fn spawn(
             scale: config::enemy::Normal1::SIZE,
             ..Default::default()
         }))
-        .insert((super::Enemy, HP::new(5), Normal1, BulletCollidable::Enemy))
+        .insert((super::Enemy, HP::new(5), Normal3, BulletCollidable::Enemy))
         .insert(bundle)
         .with_children(|parent| {
-            let bullets: Vec<(StraightBullet, f32, u64)> =
-                vec![(StraightBullet::new(150.), 0., 1000)];
+            let bullets: Vec<(HomingBullet, f32, u64)> = vec![
+                (HomingBullet::new(50.), -PI / 8., 800),
+                (HomingBullet::new(50.), 0., 800),
+                (HomingBullet::new(50.), PI / 8., 800),
+            ];
 
             bullets.iter().for_each(|(bullet, angle, millis)| {
                 parent
@@ -52,8 +55,8 @@ pub(crate) fn spawn(
 }
 
 pub(crate) fn run(
-    mut enemy_query: Query<&mut Transform, With<Normal1>>,
-    delta_query: Query<&Transform, (With<in_game::delta::Delta>, Without<Normal1>)>,
+    mut enemy_query: Query<&mut Transform, With<Normal3>>,
+    delta_query: Query<&Transform, (With<in_game::delta::Delta>, Without<Normal3>)>,
     time: Res<Time>,
 ) {
     let player = delta_query.single();
@@ -63,16 +66,16 @@ pub(crate) fn run(
             .right()
             .truncate()
             .angle_between(player.translation.sub(transform.translation).truncate());
+        transform.rotate_z(angle);
         if transform.translation.y > 250. {
             transform.translation.y -= 50. * time.delta_seconds();
         }
-        transform.rotate_z(angle);
     })
 }
 
 pub(crate) fn check_despawn(
     mut commands: Commands,
-    normal1_query: Query<(&HP, Entity), With<Normal1>>,
+    normal1_query: Query<(&HP, Entity), With<Normal3>>,
 ) {
     normal1_query.for_each(|(hp, entity)| {
         if hp.hp() > 0 {
