@@ -1,3 +1,4 @@
+use std::f32::consts::PI;
 use std::ops::Sub;
 
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
@@ -37,9 +38,12 @@ impl bullet::Bullet for HomingBullet {
         bullet_query
             .iter_mut()
             .for_each(|(mut bullet, mut transform)| {
-                bullet.angle += Vec2::from_angle(bullet.angle)
-                    .angle_between(player.translation.sub(transform.translation).truncate())
-                    * 0.2;
+                let angle_diff = Vec2::from_angle(bullet.angle)
+                    .angle_between(player.translation.sub(transform.translation).truncate());
+                if angle_diff.abs() < PI / 2. {
+                    bullet.angle += angle_diff * 0.01
+                }
+
                 transform.translation +=
                     bullet.speed * Vec2::from_angle(bullet.angle).extend(0.) * time.delta_seconds();
             });

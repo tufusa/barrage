@@ -50,23 +50,24 @@ pub(crate) fn control(
     time: Res<Time>,
 ) {
     let speed = 100.;
-    let diff = dir(&input).extend(0.) * speed * time.delta_seconds();
+    let player_transform = delta_query.single();
+    let diff = dir(&input, player_transform) * speed * time.delta_seconds();
     delta_query.single_mut().translation += diff;
 }
 
-fn dir(input: &Res<Input<KeyCode>>) -> Vec2 {
-    let mut dir = Vec2::ZERO;
+fn dir(input: &Res<Input<KeyCode>>, transform: &Transform) -> Vec3 {
+    let mut dir = Vec3::ZERO;
     if input.pressed(KeyCode::W) || input.pressed(KeyCode::Up) {
-        dir += Vec2::Y;
+        dir += transform.right();
     }
     if input.pressed(KeyCode::A) || input.pressed(KeyCode::Left) {
-        dir += Vec2::NEG_X;
+        dir += transform.up();
     }
     if input.pressed(KeyCode::S) || input.pressed(KeyCode::Down) {
-        dir += Vec2::NEG_Y;
+        dir += transform.left();
     }
     if input.pressed(KeyCode::D) || input.pressed(KeyCode::Right) {
-        dir += Vec2::X;
+        dir += transform.down();
     }
     dir.normalize_or_zero()
 }

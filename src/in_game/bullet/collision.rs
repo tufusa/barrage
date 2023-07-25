@@ -12,7 +12,7 @@ pub(crate) enum BulletCollidable {
 
 pub(crate) fn collision<B: Bullet>(
     mut commands: Commands,
-    mut collider_query: Query<(&Transform, Entity, Option<&mut HP>, &BulletCollidable)>,
+    mut collider_query: Query<(&Transform, Entity, Option<&mut HP>, &BulletCollidable), Without<B>>,
     bullet_query: Query<(&Transform, Entity, Option<&PlayerBullet>), With<B>>,
 ) {
     collider_query.for_each_mut(

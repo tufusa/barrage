@@ -53,7 +53,8 @@ impl bullet::Bullet for PlayerStraightBullet {
                     ..Default::default()
                 })
                 .insert(bullet)
-                .insert((in_game::InGame, PlayerBullet));
+                .insert(in_game::InGame)
+                .insert(PlayerBullet);
         });
     }
 
