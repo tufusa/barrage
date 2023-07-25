@@ -31,6 +31,7 @@ pub(crate) fn spawn(
         .insert(SpatialBundle::from_transform(Transform {
             translation,
             scale: config::enemy::Normal1::SIZE,
+            rotation: Quat::from_rotation_z(-PI / 2.),
             ..Default::default()
         }))
         .insert((super::Enemy, HP::new(5), Normal3, BulletCollidable::Enemy))

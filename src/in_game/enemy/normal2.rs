@@ -37,9 +37,9 @@ pub(crate) fn spawn(
         .insert(bundle)
         .with_children(|parent| {
             let bullets: Vec<(StraightBullet, f32, u64)> = vec![
-                (StraightBullet::new(150.), -PI / 8., 800),
-                (StraightBullet::new(150.), 0., 800),
-                (StraightBullet::new(150.), PI / 8., 800),
+                (StraightBullet::new(150.), -PI / 8., 400),
+                (StraightBullet::new(150.), 0., 400),
+                (StraightBullet::new(150.), PI / 8., 400),
             ];
 
             bullets.iter().for_each(|(bullet, angle, millis)| {

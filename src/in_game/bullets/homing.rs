@@ -40,7 +40,7 @@ impl bullet::Bullet for HomingBullet {
             .for_each(|(mut bullet, mut transform)| {
                 let angle_diff = Vec2::from_angle(bullet.angle)
                     .angle_between(player.translation.sub(transform.translation).truncate());
-                if angle_diff.abs() < PI / 2. {
+                if angle_diff.abs() < PI / 3. {
                     bullet.angle += angle_diff * 0.01
                 }
 
