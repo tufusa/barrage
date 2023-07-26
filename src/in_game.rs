@@ -18,7 +18,7 @@ pub(crate) fn setup(mut commands: Commands) {
 }
 
 pub(crate) fn cleanup(mut commands: Commands, in_game_query: Query<Entity, With<InGame>>) {
-    in_game_query
-        .iter()
-        .for_each(|in_game| commands.entity(in_game).despawn());
+    // in_game_query
+    // .iter()
+    // .for_each(|in_game| commands.entity(in_game).despawn());
 }

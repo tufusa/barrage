@@ -3,7 +3,7 @@ use std::f32::consts::PI;
 use bevy::{prelude::*, window::*};
 use bevy_prototype_lyon::prelude::{Fill, ShapeBundle, Stroke};
 
-use crate::{config, utility::cursor};
+use crate::{app_state::AppState, config, utility::cursor};
 
 use super::{
     bullet::{
@@ -50,9 +50,19 @@ pub(crate) fn control(
     time: Res<Time>,
 ) {
     let speed = 100.;
-    let player_transform = delta_query.single();
-    let diff = dir(&input, player_transform) * speed * time.delta_seconds();
-    delta_query.single_mut().translation += diff;
+    let mut player_transform = delta_query.single_mut();
+    let diff = dir(&input, &player_transform) * speed * time.delta_seconds();
+    player_transform.translation += diff;
+
+    let mut player = &mut player_transform.translation;
+    let max = config::Window::SIZE / 2.;
+
+    if player.x.abs() > max.x {
+        player.x = player.x.signum() * max.x;
+    }
+    if player.y.abs() > max.y {
+        player.y = player.y.signum() * max.y;
+    }
 }
 
 fn dir(input: &Res<Input<KeyCode>>, transform: &Transform) -> Vec3 {
@@ -84,4 +94,17 @@ pub(crate) fn sync_cursor(
         .truncate()
         .angle_between(cursor - delta.translation.truncate());
     delta.rotate_z(angle);
+}
+
+pub(crate) fn check_death(
+    player_query: Query<&HP, With<Delta>>,
+    mut next_state: ResMut<NextState<AppState>>,
+) {
+    let player_hp = player_query.single();
+    println!("{:?}", player_hp.hp());
+    if player_hp.hp() > 0 {
+        return;
+    }
+
+    next_state.set(AppState::GameOver);
 }

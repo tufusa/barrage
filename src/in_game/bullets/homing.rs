@@ -56,9 +56,9 @@ impl bullet::Bullet for HomingBullet {
             commands
                 .spawn(MaterialMesh2dBundle {
                     mesh: meshes.add(config::bullets::Straight::SHAPE.into()).into(),
-                    material: materials.add(ColorMaterial::from(config::bullets::Straight::COLOR)),
+                    material: materials.add(ColorMaterial::from(Color::rgb(1., 0., 1.))),
                     transform: Transform {
-                        translation: new_bullet.translation.extend(0.),
+                        translation: new_bullet.translation.extend(0.1),
                         scale: config::bullets::Straight::SIZE,
                         ..Default::default()
                     },
