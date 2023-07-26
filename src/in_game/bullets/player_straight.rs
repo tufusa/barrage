@@ -43,11 +43,14 @@ impl bullet::Bullet for PlayerStraightBullet {
             bullet.angle = new_bullet.angle;
             commands
                 .spawn(MaterialMesh2dBundle {
-                    mesh: meshes.add(config::bullets::Straight::SHAPE.into()).into(),
-                    material: materials.add(ColorMaterial::from(Color::rgb(0.6, 0.6, 1.))),
+                    mesh: meshes
+                        .add(config::bullets::PlayerStraight::SHAPE.into())
+                        .into(),
+                    material: materials
+                        .add(ColorMaterial::from(config::bullets::PlayerStraight::COLOR)),
                     transform: Transform {
                         translation: new_bullet.translation.extend(0.),
-                        scale: config::bullets::Straight::SIZE,
+                        scale: config::bullets::PlayerStraight::SIZE,
                         ..Default::default()
                     },
                     ..Default::default()
