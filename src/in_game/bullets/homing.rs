@@ -26,12 +26,7 @@ impl bullet::Bullet for HomingBullet {
 
     fn run(
         mut bullet_query: Query<(&mut Self, &mut Transform)>,
-        player_query: Query<
-            '_,
-            '_,
-            &Transform,
-            (With<in_game::delta::Delta>, Without<HomingBullet>),
-        >,
+        player_query: Query<&Transform, (With<in_game::delta::Delta>, Without<HomingBullet>)>,
         time: Res<Time>,
     ) {
         let player = player_query.single();
