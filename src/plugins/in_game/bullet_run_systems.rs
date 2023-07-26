@@ -9,12 +9,13 @@ use crate::{
 impl Plugin for super::BulletRunSystems {
     fn build(&self, app: &mut App) {
         app.add_systems(
+            Update,
             (
                 StraightBullet::run,
                 PlayerStraightBullet::run,
                 HomingBullet::run,
             )
-                .in_set(OnUpdate(AppState::InGame)),
+                .run_if(in_state(AppState::InGame)),
         );
     }
 }

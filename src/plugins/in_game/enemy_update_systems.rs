@@ -8,6 +8,7 @@ use crate::{
 impl Plugin for super::EnemyRunSystems {
     fn build(&self, app: &mut App) {
         app.add_systems(
+            Update,
             (
                 boss::run,
                 boss::check_despawn,
@@ -18,7 +19,7 @@ impl Plugin for super::EnemyRunSystems {
                 normal3::run,
                 normal3::check_despawn,
             )
-                .in_set(OnUpdate(AppState::InGame)),
+                .run_if(in_state(AppState::InGame)),
         );
     }
 }

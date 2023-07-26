@@ -11,12 +11,13 @@ use crate::{
 impl Plugin for super::BulletSpawnSystems {
     fn build(&self, app: &mut App) {
         app.add_systems(
+            Update,
             (
                 StraightBullet::spawn,
                 PlayerStraightBullet::spawn,
                 HomingBullet::spawn,
             )
-                .in_set(OnUpdate(AppState::InGame)),
+                .run_if(in_state(AppState::InGame)),
         );
     }
 }

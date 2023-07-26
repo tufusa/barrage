@@ -14,16 +14,18 @@ mod utility;
 
 fn main() {
     App::new()
-        .add_plugin(plugins::Base)
+        .add_plugins((
+            plugins::Base,
+            plugins::in_game::NewBulletEvents,
+            plugins::in_game::InGameUpdateSystems,
+        ))
         .add_state::<AppState>()
-        .add_plugin(plugins::in_game::NewBulletEvents)
-        .add_system(setup.on_startup())
-        .add_system(title::setup.in_schedule(OnEnter(AppState::Title)))
-        .add_system(title::cleanup.in_schedule(OnExit(AppState::Title)))
-        .add_system(in_game::setup.in_schedule(OnEnter(AppState::InGame)))
-        .add_plugin(plugins::in_game::InGameUpdateSystems)
-        .add_system(in_game::cleanup.in_schedule(OnExit(AppState::InGame)))
-        .add_system(debug)
+        .add_systems(Startup, setup)
+        .add_systems(OnEnter(AppState::Title), title::setup)
+        .add_systems(OnExit(AppState::Title), title::cleanup)
+        .add_systems(OnEnter(AppState::InGame), in_game::setup)
+        .add_systems(OnExit(AppState::InGame), in_game::cleanup)
+        .add_systems(Update, debug)
         .run();
 }
 

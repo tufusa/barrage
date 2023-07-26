@@ -11,12 +11,13 @@ use crate::{
 impl Plugin for super::BulletCollisionSystems {
     fn build(&self, app: &mut App) {
         app.add_systems(
+            Update,
             (
                 collision::<StraightBullet>,
                 collision::<PlayerStraightBullet>,
                 collision::<HomingBullet>,
             )
-                .in_set(OnUpdate(AppState::InGame)),
+                .run_if(in_state(AppState::InGame)),
         );
     }
 }

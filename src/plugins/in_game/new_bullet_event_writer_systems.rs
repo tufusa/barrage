@@ -11,12 +11,13 @@ use crate::{
 impl Plugin for super::NewBulletEventWriterSystems {
     fn build(&self, app: &mut App) {
         app.add_systems(
+            Update,
             (
                 bullet_spawn_event_writer::<StraightBullet>,
                 bullet_spawn_event_writer::<PlayerStraightBullet>,
                 bullet_spawn_event_writer::<HomingBullet>,
             )
-                .in_set(OnUpdate(AppState::InGame)),
+                .run_if(in_state(AppState::InGame)),
         );
     }
 }
