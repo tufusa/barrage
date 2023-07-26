@@ -26,12 +26,7 @@ impl bullet::Bullet for HomingBullet {
 
     fn run(
         mut bullet_query: Query<(&mut Self, &mut Transform)>,
-        player_query: Query<
-            '_,
-            '_,
-            &Transform,
-            (With<in_game::delta::Delta>, Without<HomingBullet>),
-        >,
+        player_query: Query<&Transform, (With<in_game::delta::Delta>, Without<HomingBullet>)>,
         time: Res<Time>,
     ) {
         let player = player_query.single();
@@ -61,9 +56,9 @@ impl bullet::Bullet for HomingBullet {
             commands
                 .spawn(MaterialMesh2dBundle {
                     mesh: meshes.add(config::bullets::Straight::SHAPE.into()).into(),
-                    material: materials.add(ColorMaterial::from(config::bullets::Straight::COLOR)),
+                    material: materials.add(ColorMaterial::from(Color::rgb(1., 0., 1.))),
                     transform: Transform {
-                        translation: new_bullet.translation.extend(0.),
+                        translation: new_bullet.translation.extend(0.1),
                         scale: config::bullets::Straight::SIZE,
                         ..Default::default()
                     },

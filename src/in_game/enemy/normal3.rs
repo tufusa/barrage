@@ -31,16 +31,16 @@ pub(crate) fn spawn(
         .insert(SpatialBundle::from_transform(Transform {
             translation,
             scale: config::enemy::Normal1::SIZE,
-            rotation: Quat::from_rotation_z(-PI / 2.),
+            rotation: Quat::from_rotation_z(PI / 2.),
             ..Default::default()
         }))
         .insert((super::Enemy, HP::new(5), Normal3, BulletCollidable::Enemy))
         .insert(bundle)
         .with_children(|parent| {
             let bullets: Vec<(HomingBullet, f32, u64)> = vec![
-                (HomingBullet::new(50.), -PI / 8., 800),
-                (HomingBullet::new(50.), 0., 800),
-                (HomingBullet::new(50.), PI / 8., 800),
+                (HomingBullet::new(60.), -PI / 8., 500),
+                (HomingBullet::new(60.), 0., 500),
+                (HomingBullet::new(60.), PI / 8., 500),
             ];
 
             bullets.iter().for_each(|(bullet, angle, millis)| {
@@ -69,7 +69,7 @@ pub(crate) fn run(
             .angle_between(player.translation.sub(transform.translation).truncate());
         transform.rotate_z(angle);
         if transform.translation.y > 250. {
-            transform.translation.y -= 50. * time.delta_seconds();
+            transform.translation.y -= 20. * time.delta_seconds();
         }
     })
 }
