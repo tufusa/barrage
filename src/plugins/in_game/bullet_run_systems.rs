@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::{
     app_state::AppState,
-    in_game::bullets::{HomingBullet, StraightBullet},
+    in_game::bullets::{HomingBullet, ReflectBullet, StraightBullet},
     in_game::{bullet::Bullet, bullets::PlayerStraightBullet},
 };
 
@@ -13,6 +13,7 @@ impl Plugin for super::BulletRunSystems {
             (
                 StraightBullet::run,
                 PlayerStraightBullet::run,
+                ReflectBullet::run,
                 HomingBullet::run,
             )
                 .run_if(in_state(AppState::InGame)),

@@ -8,9 +8,9 @@ pub(crate) mod phase5;
 
 #[derive(Debug, Clone, Copy, Default, Eq, PartialEq, Hash, States)]
 pub(crate) enum Phase {
+    #[default]
     Phase1,
     Phase2,
-    #[default]
     Phase3,
     Phase4,
     Phase5,

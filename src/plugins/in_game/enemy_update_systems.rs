@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::{
     app_state::AppState,
-    in_game::enemy::{boss, normal1, normal2, normal3},
+    in_game::enemy::{boss, normal1, normal2, normal3, normal4},
 };
 
 impl Plugin for super::EnemyRunSystems {
@@ -18,6 +18,8 @@ impl Plugin for super::EnemyRunSystems {
                 normal2::check_despawn,
                 normal3::run,
                 normal3::check_despawn,
+                normal4::run,
+                normal4::check_despawn,
             )
                 .run_if(in_state(AppState::InGame)),
         );

@@ -41,6 +41,11 @@ fn debug(
     window_query: Query<&Window, With<PrimaryWindow>>,
     camera_query: Query<(&Camera, &GlobalTransform)>,
 ) {
-    let Some(cursor) = utility::cursor::position(window_query, camera_query) else { return; };
-    // println!("{:?}", cursor);
+    // println!(
+    // "{:?}",
+    // (
+    // window_query.single().width(),
+    // window_query.single().height()
+    // )
+    // );
 }
