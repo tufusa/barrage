@@ -106,5 +106,5 @@ pub(crate) fn check_death(
         return;
     }
 
-    // next_state.set(AppState::GameOver);
+    next_state.set(AppState::GameOver);
 }

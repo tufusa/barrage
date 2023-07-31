@@ -9,7 +9,9 @@ mod font;
 mod hierarchy;
 mod in_game;
 mod plugins;
+mod reset;
 mod title;
+mod ui;
 mod utility;
 
 fn main() {
@@ -21,10 +23,19 @@ fn main() {
         ))
         .add_state::<AppState>()
         .add_systems(Startup, setup)
-        .add_systems(OnEnter(AppState::Title), title::setup)
+        // .add_systems(OnEnter(AppState::Title), title::setup)
+        .add_systems(Update, title::check_next.run_if(in_state(AppState::Title)))
         .add_systems(OnExit(AppState::Title), title::cleanup)
         .add_systems(OnEnter(AppState::InGame), in_game::setup)
         .add_systems(OnExit(AppState::InGame), in_game::cleanup)
+        .add_systems(
+            Update,
+            reset::check_reset.run_if(in_state(AppState::GameClear)),
+        )
+        .add_systems(
+            Update,
+            reset::check_reset.run_if(in_state(AppState::GameOver)),
+        )
         .add_systems(Update, debug)
         .run();
 }
@@ -41,11 +52,4 @@ fn debug(
     window_query: Query<&Window, With<PrimaryWindow>>,
     camera_query: Query<(&Camera, &GlobalTransform)>,
 ) {
-    // println!(
-    // "{:?}",
-    // (
-    // window_query.single().width(),
-    // window_query.single().height()
-    // )
-    // );
 }
